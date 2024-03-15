@@ -1,59 +1,55 @@
 import { NextRequest, NextResponse } from "next/server";
+import { fetchATodo,deleteAtodo,editAtodo } from '@/data/firestore'
 
-// get todo
+// todo 단일 가져오기
 export async function GET(request : NextRequest, { params }: { params: { slug: string } }) {
-
-    const searchParams = request.nextUrl.searchParams
- 
-    const search = searchParams.get('search')
    
-    const response = {
-        msg : 'todos 하나 가져오기',
-        data : {
-            id : params.slug,
-            title : 'task1',
-            isDone : false,
-            query : search
-        }
+    const fetchedTodo = await fetchATodo(params.slug)
+
+    if(fetchedTodo===null){
+        return new Response(null,{status : 204})
     }
 
-    return NextResponse.json (response, {status : 201})
+    const response = {
+        msg : 'todos 단일 가져오기',
+        data :fetchedTodo
+    }
+
+    return NextResponse.json (response, {status : 200})
 }
 
-// delete todo
+// todo 단일 삭제
 export async function DELETE(request : NextRequest, { params }: { params: { slug: string } }) {
    
-    const response = {
-        msg : 'todos delete 성공',
-        data : {
-            id : params.slug,
-            title : 'task1',
-            isDone : false
-        }
+    const deletedTodo = await deleteAtodo(params.slug)
+
+    if(deletedTodo===null){
+        return new Response(null,{status : 204})
     }
 
-    return NextResponse.json (response, {status : 201})
+    const response = {
+        msg : 'todos delete 성공',
+        data : deletedTodo
+    }
+
+    return NextResponse.json (response, {status : 200})
 }
 
-// post todo
+// todo 단일 수정
 export async function POST(request : NextRequest, { params }: { params: { slug: string } }) {
    
-    const data = await request.json()
+    const {title, isDone} = await request.json()
 
-    const editedTodo = {
-        id : params.slug,
-        title : data.title,
-        isDone : data.isDone
+    const editedTodo = await editAtodo(params.slug, {title, isDone})
+
+    if(editedTodo===null){
+        return new Response(null,{status : 204})
     }
 
     const response = {
         msg : 'todos 수정 성공',
-        data : {
-            id : params.slug,
-            title : 'task1',
-            isDone : false
-        }
+        data : editedTodo
     }
 
-    return NextResponse.json (response, {status : 201})
+    return NextResponse.json (response, {status : 200})
 }

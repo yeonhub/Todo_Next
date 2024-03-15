@@ -1,32 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-import dummyTodos from '@/data/dummy.json'
+import { fetchTodos, addTodo } from '@/data/firestore'
 
-// get all todo
+// todo 모두 가져오기
 export async function GET(request : NextRequest) {
+
+    const fetchedTodos = await fetchTodos()
 
     const response = {
         msg : 'todos get 전체',
-        data : dummyTodos
+        data : fetchedTodos
     }
 
-    return NextResponse.json (response, {status : 201})
+    return NextResponse.json (response, {status : 200})
 }
 
-// post todo
+// todo 추가
 export async function POST(request : NextRequest) {
-   
-    const data = await request.json()
 
-    const newTodo = {
-        id : "10",
-        title : data.title,
-        isDone : false
+    const {title} = await request.json();
+    if(title === null){
+        const errMsg = {
+            msg : "title 없음"
+        }
+        return NextResponse.json (errMsg, {status : 422})
     }
+
+    const addedTodo = await addTodo({title})
 
     const response = {
         msg : 'todos post 성공',
-        data : newTodo
+        data : addedTodo
     }
    
-    return Response.json(response, {status : 201})
+    return Response.json(response, {status : 200})
 }
