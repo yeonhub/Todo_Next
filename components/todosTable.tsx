@@ -31,6 +31,10 @@ export default function TodosTable({todos} : {todos : Todo[]}) {
     return formatted.replace(/\./g, '. ').replace(',', ' ');
   };
 
+  const isDoneUI = (isDone: boolean): string => {
+    return isDone ? "line-through text-white/50" : "";
+  };
+
   const router = useRouter()
 
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -179,11 +183,11 @@ export default function TodosTable({todos} : {todos : Todo[]}) {
         <TableBody emptyContent={"할일 목록이 없습니다."}>
           {
             todos && todos.map((aTodo : Todo)=>(
-              <TableRow key={aTodo.id}>
-            <TableCell>{aTodo.id.slice(0,4)}</TableCell>
-            <TableCell>{aTodo.title}</TableCell>
+            <TableRow key={aTodo.id}>
+            <TableCell className={isDoneUI(aTodo.isDone)}>{aTodo.id.slice(0,4)}</TableCell>
+            <TableCell className={isDoneUI(aTodo.isDone)}>{aTodo.title}</TableCell>
             <TableCell>{aTodo.isDone ? "✔️" : "❌"}</TableCell>
-<TableCell>{formattedDate(new Date(aTodo.createdAt))}</TableCell>
+<TableCell className={isDoneUI(aTodo.isDone)}>{formattedDate(new Date(aTodo.createdAt))}</TableCell>
 
             <TableCell>
             <div className="relative flex justify-end items-center gap-2">
