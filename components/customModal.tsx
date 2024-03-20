@@ -15,7 +15,7 @@ const CustomModal = ({focusedTodo, modalType, onClose,onEdit,onDelete}: {
 
         const [isDone, setIsDone] = useState(focusedTodo.isDone)
         const [isLoading, setIsLoading] = useState(false)
-        const [editedTotoInput, setEditedTotoInput] = useState<string>('')
+        const [editedTotoInput, setEditedTotoInput] = useState<string>(focusedTodo.title)
         const formattedDate = new Date(focusedTodo.createdAt).toLocaleString('ko-KR', {
             year: 'numeric',
             month: '2-digit',
@@ -32,7 +32,7 @@ const CustomModal = ({focusedTodo, modalType, onClose,onEdit,onDelete}: {
             <p><span className="font-bold">ID : </span>{focusedTodo.id}</p>
             <p><span className="font-bold">Title : </span>{focusedTodo.title}</p>
             <p><span className="font-bold">Done : </span>
-  {focusedTodo.isDone ? "✔️" : "❌"}</p>
+            {focusedTodo.isDone ? "✔️" : "❌"}</p>
             <p><span className="font-bold">Date : </span>{formattedDate}</p>
             </ModalBody>
             <ModalFooter>
@@ -43,43 +43,54 @@ const CustomModal = ({focusedTodo, modalType, onClose,onEdit,onDelete}: {
             </>
         }
         const editModal = ()=>{
-            return  <>
-                    <ModalHeader className="flex flex-col gap-1">Edit</ModalHeader>
-                    <ModalBody>
-                        <p><span className="font-bold">ID : </span>{focusedTodo.id}</p>
-                      <Input
-                        autoFocus
-                        label="Title"
-                        placeholder={focusedTodo.title}
-                        variant="bordered"
-                        value={editedTotoInput}
-                        onValueChange={setEditedTotoInput}
-                      />
-                      <div className="flex px-1 py-1 space-x-4">
-                      <span>Done</span>
-                          <Switch color="secondary" defaultSelected={focusedTodo.isDone} aria-label="Automatic updates" onValueChange={setIsDone}/>
-                      </div>
-                      <div className="flex px-1 py-1 space-x-4">
-                      <span>Date</span>
-                        <p>
-                            {`${formattedDate}`}
-                        </p>
-                      </div>
-
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button color="danger" variant="flat" onPress={()=>{
-                        setIsLoading(true)
-                        onEdit(focusedTodo.id, editedTotoInput, isDone)
-                      }}>
-                        {(isLoading) ? <CircularProgress color="secondary" size="sm" aria-label="Loading..." /> : 'Edit'}
-                      </Button>
-                      <Button color="primary" onPress={onClose}>
-                        Close
-                      </Button>
-                    </ModalFooter>
-                  </>
-        }
+          return (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Edit</ModalHeader>
+              <ModalBody>
+                <p><span className="font-bold">ID : </span>{focusedTodo.id}</p>
+                <Input
+                  autoFocus
+                  label="Title"
+                  // defaultValue={focusedTodo.title}
+                  placeholder={focusedTodo.title}
+                  variant="bordered"
+                  value={editedTotoInput}
+                  onValueChange={setEditedTotoInput}
+                />
+                <div className="flex px-1 py-1 space-x-4">
+                  <span>Done</span>
+                  <Switch
+                    color="secondary"
+                    defaultSelected={focusedTodo.isDone}
+                    aria-label="Automatic updates"
+                    onValueChange={setIsDone}
+                  />
+                </div>
+                <div className="flex px-1 py-1 space-x-4">
+                  <span>Date</span>
+                  <p>
+                    {`${formattedDate}`}
+                  </p>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  color="danger"
+                  variant="flat"
+                  onPress={() => {
+                    setIsLoading(true);
+                    onEdit(focusedTodo.id, editedTotoInput, isDone);
+                  }}
+                >
+                  {(isLoading) ? <CircularProgress color="secondary" size="sm" aria-label="Loading..." /> : 'Edit'}
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Close
+                </Button>
+              </ModalFooter>
+            </>
+          );
+        };
         const deleteModal = ()=>{
             return <>
             <ModalHeader className="flex flex-col gap-1">Detail</ModalHeader>
@@ -87,7 +98,7 @@ const CustomModal = ({focusedTodo, modalType, onClose,onEdit,onDelete}: {
             <p><span className="font-bold">ID : </span>{focusedTodo.id}</p>
             <p><span className="font-bold">Title : </span>{focusedTodo.title}</p>
             <p><span className="font-bold">Done : </span>
-  {focusedTodo.isDone ? "✔️" : "❌"}</p>
+            {focusedTodo.isDone ? "✔️" : "❌"}</p>
             <p><span className="font-bold">Date : </span>{formattedDate}</p>
             </ModalBody>
             <ModalFooter>
