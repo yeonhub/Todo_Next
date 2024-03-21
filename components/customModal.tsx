@@ -77,6 +77,7 @@ const CustomModal = ({focusedTodo, modalType, onClose,onEdit,onDelete}: {
                 <Button
                   color="danger"
                   variant="flat"
+                  isDisabled={!editedTotoInput.trim()}
                   onPress={() => {
                     setIsLoading(true);
                     onEdit(focusedTodo.id, editedTotoInput, isDone);
