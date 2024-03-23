@@ -1,11 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, Timestamp, getDoc, updateDoc, query, orderBy } from "firebase/firestore";
 
-// Import the functions you need from the SDKs you need
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: process.env.API_KEY,
     authDomain: process.env.AUTH_DOMAIN,
@@ -15,7 +10,6 @@ const firebaseConfig = {
     appId: process.envAPP_ID
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -31,14 +25,12 @@ export async function fetchTodos() {
     const fetchTodos = [];
 
     querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
 
         const aTodo = {
             id: doc.id,
             title: doc.data()["title"],
             isDone: doc.data()["isDone"],
-            // createdAt: doc.data()["createdAt"].toDate().toLocaleTimeString('ko')
             createdAt: doc.data()["createdAt"].toDate()
         }
         fetchTodos.push(aTodo)
@@ -49,7 +41,6 @@ export async function fetchTodos() {
 
 // todo 추가
 export async function addTodo({ title }) {
-    // Add a new document with a generated id
     const newTodoRef = doc(collection(db, "todos"));
 
     const createdAtTimestamp = Timestamp.fromDate(new Date());
@@ -62,7 +53,6 @@ export async function addTodo({ title }) {
         createdAt: createAtToDate
     }
 
-    // later...
     await setDoc(newTodoRef, newTodoData);
 
     return newTodoData
@@ -85,14 +75,12 @@ export async function fetchATodo(id) {
             id: todoDocSnap.id,
             title: todoDocSnap.data()["title"],
             isDone: todoDocSnap.data()["isDone"],
-            // createdAt: todoDocSnap.data()["createdAt"].toDate().toLocaleTimeString('ko')
             createdAt: todoDocSnap.data()["createdAt"].toDate()
         }
 
         return fetchedTodo;
 
     } else {
-        // docSnap.data() will be undefined in this case
         console.log("No such document!");
         return null;
     }
@@ -122,7 +110,6 @@ export async function editAtodo(id, { title, isDone }) {
 
     const todoRef = doc(db, "todos", id);
 
-    // Set the "capital" field of the city 'DC'
     await updateDoc(todoRef, {
         title: title,
         isDone: isDone
@@ -135,6 +122,5 @@ export async function editAtodo(id, { title, isDone }) {
         createdAt: fetchedTodo.createdAt
     };
 }
-
 
 module.exports = { fetchTodos, addTodo, fetchATodo, deleteAtodo, editAtodo }
