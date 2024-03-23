@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,Input,Button,Popover, PopoverTrigger, PopoverContent, Spinner, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,Modal, ModalContent, useDisclosure} from "@nextui-org/react";
 import { CustomModalType, FocusedTodoType, Todo } from "@/types";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { VerticalDotsIcon } from "./icons";
 import CustomModal from "./customModal";
+// import todosLoading from "@/components/todosLoading"
 
 export default function TodosTable({todos} : {todos : Todo[]}) {  
 
@@ -183,11 +184,11 @@ export default function TodosTable({todos} : {todos : Todo[]}) {
         <TableBody emptyContent={"할일 목록이 없습니다."}>
           {
             todos && todos.map((aTodo : Todo)=>(
-            <TableRow key={aTodo.id}>
+              <TableRow key={aTodo.id}>
             <TableCell className={isDoneUI(aTodo.isDone)}>{aTodo.id.slice(0,4)}</TableCell>
             <TableCell className={isDoneUI(aTodo.isDone)}>{aTodo.title}</TableCell>
             <TableCell>{aTodo.isDone ? "✔️" : "❌"}</TableCell>
-<TableCell className={isDoneUI(aTodo.isDone)}>{formattedDate(new Date(aTodo.createdAt))}</TableCell>
+            <TableCell className={isDoneUI(aTodo.isDone)}>{formattedDate(new Date(aTodo.createdAt))}</TableCell>
 
             <TableCell>
             <div className="relative flex justify-end items-center gap-2">
