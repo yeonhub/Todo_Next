@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,Input,Button,Popover, PopoverTrigger, PopoverContent, Spinner, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,Modal, ModalContent, useDisclosure} from "@nextui-org/react";
 import { CustomModalType, FocusedTodoType, Todo } from "@/types";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { VerticalDotsIcon } from "./icons";
 import CustomModal from "./customModal";
-// import todosLoading from "@/components/todosLoading"
 
 export default function TodosTable({todos} : {todos : Todo[]}) {  
 

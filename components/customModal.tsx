@@ -51,7 +51,6 @@ const CustomModal = ({focusedTodo, modalType, onClose,onEdit,onDelete}: {
                 <Input
                   autoFocus
                   label="Title"
-                  // defaultValue={focusedTodo.title}
                   placeholder={focusedTodo.title}
                   variant="bordered"
                   value={editedTotoInput}
